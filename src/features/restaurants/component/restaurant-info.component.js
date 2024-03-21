@@ -4,78 +4,53 @@ import { SvgXml } from "react-native-svg";
 import star from '../../../../assets/star';
 import open from '../../../../assets/open';
 
+import { Text } from '../../../components/typography/text.components';
 import { Spacer } from '../../../components/spacer/spacer.component';
-import {Text, View } from 'react-native';
-import { Card } from 'react-native-paper';
+import {
+    RestaurantCard,
+    RestaurantCardCover,
+    Info,
+    Section,
+    SectionEnd,
+    Rating,
+    Icon,
+    Address,
+  } from './restaurant-info-card.styles.js';
 
-const Title = styled.Text`
-font-family: ${(props)=>props.theme.fonts.heading};
-font-size: ${(props)=>props.theme.fontSizes.body};
-padding:  ${(props)=> props.theme.space[0]};
-color: ${(props)=> props.theme.colors.ui.error}`
-
-const RestaurantCard = styled(Card)`
-background-color: white;
-margin: 8px `
-
-const Rating= styled.View`
-flex-direction: row;
-padding:${(props) =>props.theme.space[1]}`
-
-const Info = styled(View)`
-padding: ${(props)=> props.theme.space[1]};
-margin-left: ${(props)=> props.theme.sizes[1]}`
-
-const Address = styled(Text)`
-font-family: ${(props)=> props.theme.fonts.body};
-padding:   ${(props)=> props.theme.space[0]}`
-
-
-const RestaurantCover = styled(Card.Cover)`
-padding: ${(props)=> props.theme.space[1]};
-backgroundColor: white;`
-
-const Section= styled.View`
-flex-direction: row;
-align-items: center;`
-
-const SectionEnd= styled.View`
-flex: 1;
-flex-direction: row;
-justify-content: flex-end`
 
 export const RestaurantInfo = ({restaurant={}}) =>{
     const {
-        name ="Some Restaurant",
+        name ="Jonathan Restaurant",
         photos = ['https://picsum.photos/700',],
         address = "canada",
         rating= 4,
         isOpenNow= true,
         isClosedTemporarily= true,
+        id=1,
     }= restaurant;
 
     const ratingArray = Array.from(new Array(Math.floor(rating)))
     
     return(
           <RestaurantCard elevation={5} >
-            <RestaurantCover key={name} source={{uri:photos[0]}} />
+            <RestaurantCardCover key={name} source={{uri:photos[0]}} />
             <Info>
-            <Title>{name}</Title>
+            <Text variant="label" >{name}</Text>
             <Section>
                <Rating>
                    {ratingArray.map(()=> (
-                   <SvgXml key={name} xml={star} width={20} height={20} />
+                   <SvgXml key={id} xml={star} width={20} height={20} />
                   ))}
                </Rating>
                <SectionEnd>
-               {isClosedTemporarily && (
-                <Text variant="label" style={{ color: 'red'}}>
-                  CLOSED TEMPORARILY
-                </Text>
-               )}
-               <Spacer position='left' size='medium'>
-               {isOpenNow && <SvgXml xml={open} width={20} height={20} />}
-               </Spacer>
+                  {isClosedTemporarily && (
+                  <Text variant="error" >
+                    CLOSED TEMPORARILY
+                  </Text>
+                  )}
+                  <Spacer position='left' size='medium'>
+                  {isOpenNow && <SvgXml xml={open} width={20} height={20} />}
+                  </Spacer>
                </SectionEnd>
             </Section>
             <Address>{address}</Address>
