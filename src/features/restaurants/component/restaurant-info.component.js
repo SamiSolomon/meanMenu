@@ -1,11 +1,9 @@
 import React from 'react';
-import styled from 'styled-components/native';
 import { SvgXml } from "react-native-svg";
 import star from '../../../../assets/star';
 import open from '../../../../assets/open';
 
 import { Text } from '../../../components/typography/text.components';
-import { Spacer } from '../../../components/spacer/spacer.component';
 import {
     RestaurantCard,
     RestaurantCardCover,
@@ -13,9 +11,9 @@ import {
     Section,
     SectionEnd,
     Rating,
-    Icon,
     Address,
   } from './restaurant-info-card.styles.js';
+import { Spacer } from '../../../components/spacer/spacer.component.js';
 
 
 export const RestaurantInfo = ({restaurant={}}) =>{
@@ -48,8 +46,8 @@ export const RestaurantInfo = ({restaurant={}}) =>{
                     CLOSED TEMPORARILY
                   </Text>
                   )}
-                  <Spacer position='left' size='medium'>
-                  {isOpenNow && <SvgXml xml={open} width={20} height={20} />}
+                  <Spacer position='left' size='medium' >
+                        {isOpenNow && <SvgXml xml={open} width={20} height={20} />}
                   </Spacer>
                </SectionEnd>
             </Section>
