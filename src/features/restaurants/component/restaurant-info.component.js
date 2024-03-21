@@ -4,7 +4,7 @@ import { SvgXml } from "react-native-svg";
 import star from '../../../../assets/star';
 import open from '../../../../assets/open';
 
-
+import { Spacer } from '../../../components/spacer/spacer.component';
 import {Text, View } from 'react-native';
 import { Card } from 'react-native-paper';
 
@@ -73,7 +73,9 @@ export const RestaurantInfo = ({restaurant={}}) =>{
                   CLOSED TEMPORARILY
                 </Text>
                )}
-              {isOpenNow && <SvgXml xml={open} width={20} height={20} />}
+               <Spacer position='left' size='medium'>
+               {isOpenNow && <SvgXml xml={open} width={20} height={20} />}
+               </Spacer>
                </SectionEnd>
             </Section>
             <Address>{address}</Address>
