@@ -1,30 +1,49 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components/native';
-import {
-    FlatList,
-  } from "react-native";
-import { SafeArea } from '../../../components/utility/safe-area.components';
+import {  FlatList, View,TouchableOpacity } from "react-native";
 
-import { Searchbar } from "react-native-paper";
+import { SafeArea } from '../../../components/utility/safe-area.components';
+import { ActivityIndicator } from 'react-native-paper';
+
+import { Search } from '../component/search.component';
 import { RestaurantInfo } from '../component/restaurant-info.component';
 import { Spacer } from '../../../components/spacer/spacer.component';
+
+import { RestaurantsContext } from '../../../services/restaurants/restaurants.context';
+import { FavoritesContext } from '../../../services/favorites/favorites.context';
 
 
 const RestaurantList =styled(FlatList).attrs({  
    contentContainerStyle: {padding: 16}
-})`
+})``
 
-`
+export const RestaurantsScreen = ({navigation}) => {
+  const {isLoading, error, restaurants} = useContext(RestaurantsContext)
+  const { favorites } = useContext(FavoritesContext)
 
-export const RestaurantsScreen = () => {
     return (
         <SafeArea>
-          <Searchbar placeholder="Search" />
+         {isLoading &&  
+         <View style={{position:"absolute", top:"50%", left:"50%" }}>
+          <ActivityIndicator
+          size={50}
+          style={{marginLeft: -25}}
+          animating={true}
+           />
+         </View> }
+          <Search />
         <RestaurantList 
-            data={[{name:1},{name:2},{name:3} ,{name:4},{name:5},{name:6},{name:7},{name:8},{name:9},{name:10},{name:11},{name:12},{name:13},{name:14}]}
-            renderItem={()=> <Spacer position="bottom" size="small">
-                                <RestaurantInfo /> 
-                            </Spacer> }
+            data={restaurants}
+            renderItem={({item})=>{
+              return (
+                  <TouchableOpacity onPress={()=> navigation.navigate("RestaurantDetail", {
+                    restaurant: item,
+                  })} >
+                        <Spacer position="bottom" size="small">
+                          <RestaurantInfo restaurant={item} /> 
+                        </Spacer> 
+                  </TouchableOpacity>
+                    )}}
             keyExtractor={(item)=>item.name}
           />
       </SafeArea>

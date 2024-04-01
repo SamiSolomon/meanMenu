@@ -3,6 +3,7 @@ import { SvgXml } from "react-native-svg";
 import star from '../../../../assets/star';
 import open from '../../../../assets/open';
 
+import { Favorites } from '../../../components/favorites/favorites.component.js';
 import { Text } from '../../../components/typography/text.components';
 import {
     RestaurantCard,
@@ -16,7 +17,7 @@ import {
 import { Spacer } from '../../../components/spacer/spacer.component.js';
 
 
-export const RestaurantInfo = ({restaurant={}}) =>{
+export const RestaurantInfo = ({restaurant={item}}) =>{
     const {
         name ="Jonathan Restaurant",
         photos = ['https://picsum.photos/700',],
@@ -24,20 +25,23 @@ export const RestaurantInfo = ({restaurant={}}) =>{
         rating= 4,
         isOpenNow= true,
         isClosedTemporarily= true,
-        id=1,
+        placeID,
     }= restaurant;
 
     const ratingArray = Array.from(new Array(Math.floor(rating)))
     
     return(
           <RestaurantCard elevation={5} >
+          
+            <Favorites restaurant={restaurant} />
+
             <RestaurantCardCover key={name} source={{uri:photos[0]}} />
             <Info>
             <Text variant="label" >{name}</Text>
             <Section>
                <Rating>
-                   {ratingArray.map(()=> (
-                   <SvgXml key={id} xml={star} width={20} height={20} />
+                   {ratingArray.map((_,i)=> (
+                   <SvgXml key={`star-${placeID}-${i}`} xml={star} width={20} height={20} />
                   ))}
                </Rating>
                <SectionEnd>
@@ -47,7 +51,7 @@ export const RestaurantInfo = ({restaurant={}}) =>{
                   </Text>
                   )}
                   <Spacer position='left' size='medium' >
-                        {isOpenNow && <SvgXml xml={open} width={20} height={20} />}
+                        {isOpenNow && <SvgXml  xml={open} width={20} height={20} />}
                   </Spacer>
                </SectionEnd>
             </Section>
