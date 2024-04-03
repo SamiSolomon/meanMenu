@@ -1,4 +1,3 @@
-import 'react-native-gesture-handler';
 import { enableScreens } from 'react-native-screens';
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import { useFonts as useOswald , Oswald_400Regular} from "@expo-google-fonts/oswald";
