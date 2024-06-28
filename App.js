@@ -52,16 +52,10 @@ export default function App() {
 
   return (
     <>
-      <ThemeProvider theme={theme}>
-      <AuthenticationContextProvider>
-        <FavoritesContextProvider>
-          <LocationContextProvider> 
-            <RestaurantsContextProvider> 
-              <Navigation />
-            </RestaurantsContextProvider>
-          </LocationContextProvider>
-        </FavoritesContextProvider>
-      </AuthenticationContextProvider>
+       <ThemeProvider theme={theme}>
+        <AuthenticationContextProvider>
+          <Navigation />
+        </AuthenticationContextProvider>
       </ThemeProvider>
       <ExpoStatusBar style="auto" />
     </>

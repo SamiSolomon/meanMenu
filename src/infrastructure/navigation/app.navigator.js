@@ -1,38 +1,54 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { RestaurantsNavigator} from "./restaurants.navigator"
-import { MapScreen } from '../../features/map/screens/map.screen';
-import Ionicons from "@expo/vector-icons/Ionicons";
-import {Text } from 'react-native';
+import React from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Ionicons } from "@expo/vector-icons";
 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-    
+import { RestaurantsNavigator } from "./restaurants.navigator";
+import { SettingsNavigator } from "./settings.navigator";
+import { MapScreen } from "../../features/map/screens/map.screen";
+import { CheckoutNavigator } from "./checkout.navigator";
+import { CartContextProvider } from "../../services/cart/cart.context";
+import { RestaurantsContextProvider } from "../../services/restaurants/restaurants.context";
+import { LocationContextProvider } from "../../services/location/location.context";
+import { FavouritesContextProvider } from "../../services/favorites/favorites.context";
+import { colors } from "../../infrastructure/theme/colors";
+
 const Tab = createBottomTabNavigator();
 
-const Tab_Icon = {
-  Restaurant: "restaurant",
-  Map: "map",
-  Settings: "settings",
-}
+const TAB_ICON = {
+  Restaurants: "md-restaurant",
+  Map: "md-map",
+  Checkout: "md-cart",
+  Settings: "md-settings",
+};
 
-const Settings =()=> <Text>Settings</Text>;
+const createScreenOptions = ({ route }) => {
+  const iconName = TAB_ICON[route.name];
+  return {
+    tabBarIcon: ({ size, color }) => (
+      <Ionicons name={iconName} size={size} color={color} />
+    ),
+  };
+};
 
-    
-export const AppNavigator = ()=> (
-    <NavigationContainer>
-        <Tab.Navigator
-                screenOptions={({ route }) => ({
-                tabBarIcon: ({ size, color }) => {
-                const iconName = Tab_Icon[route.name];
-                return <Ionicons name={iconName} size={size} color={color} />;
-                                 }})}
-                tabBarOptions={{
-                                 activeTintColor: 'tomato', // Color for the active tab
-                                 inactiveTintColor: 'gray',  // Color for inactive tabs
-                                }}
-              >
-          <Tab.Screen name="Restaurant" component={RestaurantsNavigator} options={{ headerShown: false }} />
-          <Tab.Screen name="Map"  component={MapScreen} options={{ headerShown: false }} />
-          <Tab.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
-        </Tab.Navigator>
-    </NavigationContainer>
-   );
+export const AppNavigator = () => (
+  <FavouritesContextProvider>
+    <LocationContextProvider>
+      <RestaurantsContextProvider>
+        <CartContextProvider>
+          <Tab.Navigator
+            screenOptions={createScreenOptions}
+            tabBarOptions={{
+              activeTintColor: colors.brand.primary,
+              inactiveTintColor: colors.brand.muted,
+            }}
+          >
+            <Tab.Screen name="Restaurants" component={RestaurantsNavigator}  options={{ headerShown: false }}/>
+            <Tab.Screen name="Checkout" component={CheckoutNavigator}   options={{ headerShown: false }}/>
+            <Tab.Screen name="Map" component={MapScreen}  options={{ headerShown: false }}/>
+            <Tab.Screen name="Settings" component={SettingsNavigator}  options={{ headerShown: false }}/>
+          </Tab.Navigator>
+        </CartContextProvider>
+      </RestaurantsContextProvider>
+    </LocationContextProvider>
+  </FavouritesContextProvider>
+);
